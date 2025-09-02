@@ -1,6 +1,18 @@
 package co.com.jdti.expensetrackerapi.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,62 +32,63 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Invoice {
 
-    @Id
-    @Column(columnDefinition = "VARCHAR(36)")
-    private String id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
+	@Column(name = "id", unique = true, nullable = false, updatable = false)
+	private String id;
 
-    @NotBlank
-    @Column(nullable = false)
-    private String title;
+	@NotBlank
+	@Column(nullable = false)
+	private String title;
 
-    private String description;
+	private String description;
 
-    @NotNull
-    @DecimalMin(value = "0.0", inclusive = false)
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal amount;
+	@NotNull
+	@DecimalMin(value = "0.0", inclusive = false)
+	@Column(nullable = false, precision = 10, scale = 2)
+	private BigDecimal amount;
 
-    @NotNull
-    @Column(name = "due_date", nullable = false)
-    private LocalDate dueDate;
+	@NotNull
+	@Column(name = "due_date", nullable = false)
+	private LocalDate dueDate;
 
-    @Column(name = "paid_date")
-    private LocalDate paidDate;
+	@Column(name = "paid_date")
+	private LocalDate paidDate;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private PaymentStatus status = PaymentStatus.PENDING;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private PaymentStatus status = PaymentStatus.PENDING;
 
-    @NotBlank
-    @Column(nullable = false)
-    private String vendor;
+	@NotBlank
+	@Column(nullable = false)
+	private String vendor;
 
-    @Column(name = "invoice_number")
-    private String invoiceNumber;
+	@Column(name = "invoice_number")
+	private String invoiceNumber;
 
-    private String notes;
+	private String notes;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    private Category category;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "category_id")
+	private Category category;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+	@Column(name = "created_at")
+	private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+	@Column(name = "updated_at")
+	private LocalDateTime updatedAt;
 
-    @PrePersist
-    protected void onCreate() {
-        if (id == null) {
-            id = UUID.randomUUID().toString();
-        }
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-    }
+	@PrePersist
+	protected void onCreate() {
+		if (id == null) {
+			id = UUID.randomUUID().toString();
+		}
+		createdAt = LocalDateTime.now();
+		updatedAt = LocalDateTime.now();
+	}
 
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
+	@PreUpdate
+	protected void onUpdate() {
+		updatedAt = LocalDateTime.now();
+	}
 }
