@@ -34,7 +34,7 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	// Third-party libraries
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.12'
 
 	// Annotation processors
 	compileOnly 'org.projectlombok:lombok'
