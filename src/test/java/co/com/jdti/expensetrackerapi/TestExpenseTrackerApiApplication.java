@@ -6,6 +6,6 @@ public class TestExpenseTrackerApiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.from(ExpenseTrackerApiApplication::main)
-			.with(TestExpenseTrackerApiApplication.class).run(args);
+			.with(TestcontainersConfiguration.class).run(args);
 	}
 }
